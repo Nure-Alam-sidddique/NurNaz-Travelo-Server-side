@@ -23,6 +23,9 @@ async function run() {
 
 run().catch(console.dir);
 
+app.get('/hello', (req, res) => {
+    res.send("Hello Naznin , How are You!!")
+})
 app.get('/', (req, res) => {
     res.send("Hello Nurnaz Travelo DB");
 })
