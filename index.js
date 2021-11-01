@@ -28,7 +28,7 @@ async function run() {
         app.get('/services', async (req, res) => {
             const cursor = placeCollection.find({});
             const result = await cursor.toArray();
-            res.send(result);
+            res.json(result);
         })
 
         //  Post API
