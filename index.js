@@ -22,6 +22,7 @@ async function run() {
         await client.connect();
         const database = client.db('PlaceDestination');
         const placeCollection = database.collection('Places');
+        const bookingCollection = database.collection('orders');
 
         // GET API
         app.get('/services', async (req, res) => {
@@ -37,12 +38,52 @@ async function run() {
             res.json(result);
         })
 
+        // Update ApI form get
+        app.get('/services/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await placeCollection.findOne(query);
+            res.json(result);
+            
+        })
+
+        //  Update API 
+        app.put('/services/:id', async (req, res) => {
+            const id = req.params.id;
+            const updateUser = req.body;
+            const filter = { _id: ObjectId(id) };
+            const option = { upsert: true };
+            const UpdatedDocs = {
+                $set: {
+                    placeName: updateUser.placeName,
+                    imageURL :updateUser.imageURL
+                }
+            }
+            const result = await placeCollection.updateOne(filter, UpdatedDocs, option);
+            console.log(result);
+            res.json(result);
+        })
+
         // Delete API
         app.delete('/services/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await placeCollection.deleteOne(query);
             res.json(result);
+        })
+
+        // ////////////////////////////////////////BOOKING//////////////////////////////////////////
+        app.get('/booking', async (req, res) => {
+            const cursor = bookingCollection.find({});
+            const result = await cursor.toArray();
+            res.json(result);
+      })
+
+        app.post('/booking', async (req, res) => {
+            const booking = req.body;
+            const result = await bookingCollection.insertOne(booking);
+
+            res.json(result)
         })
         
     }
