@@ -48,6 +48,41 @@ async function run() {
             
         })
 
+        //  Get API For single Service
+        app.get('/singleService/:id', async (req, res) => {
+            const id = req.params.id;
+            console.log(id);
+            const query = { _id: ObjectId(id) };
+            const singleService = await placeCollection.findOne(query);
+            console.log(singleService);
+            res.json(singleService);
+        })
+
+        //  Order Confrim
+        app.post('/orderConfirm', async (req, res) => {
+            const cursor = req.body;
+            const orderConfirm = await bookingCollection.insertOne(cursor);
+            console.log(orderConfirm);
+            res.json(orderConfirm);
+        })
+
+
+//  My Orders get method
+        app.get('/myorders', async (req, res) => {
+            const cursor = bookingCollection.find({});
+            const myOrders = await cursor.toArray();
+            console.log(myOrders);
+            res.json(myOrders);
+        })
+
+        app.delete('/booking/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const updateOrder = await bookingCollection.deleteOne(query);
+            console.log(updateOrder);
+            res.json(updateOrder);
+      })
+
         //  Update API 
         app.put('/services/:id', async (req, res) => {
             const id = req.params.id;
