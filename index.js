@@ -24,6 +24,7 @@ async function run() {
         const database = client.db('PlaceDestination');
         const placeCollection = database.collection('Places');
         const bookingCollection = database.collection('orders');
+        const userCollection = database.collection('users');
 
         // GET API
         app.get('/services', async (req, res) => {
@@ -121,6 +122,23 @@ async function run() {
 
             res.json(result)
         })
+
+      ///////////////////////////////////User Collection///////////////////////////////  
+        //  User Get Method
+        app.get('/users', async (req, res) => {
+            const cursor = userCollection.find({});
+            const result = await cursor.toArray();
+            console.log(result);
+            res.json(result);
+        })
+        app.post("/users", async (req, res) => {
+            const users = req.body;
+            const result = await userCollection.insertOne(users);
+            console.log(result);
+            res.json(result);
+    
+        })
+        
         
     }
     finally {
