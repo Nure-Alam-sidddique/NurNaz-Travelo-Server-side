@@ -93,7 +93,8 @@ async function run() {
             const UpdatedDocs = {
                 $set: {
                     placeName: updateUser.placeName,
-                    imageURL :updateUser.imageURL
+                    imageURL: updateUser.imageURL,
+                    price: updateUser.price
                 }
             }
             const result = await placeCollection.updateOne(filter, UpdatedDocs, option);
